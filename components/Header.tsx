@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 const Header = () => {
   return (
-    <div className='w-full py-2 px-5 flex justify-between items-center shadow-sm fixed bg-white'>
+    <div className='w-full py-2 px-5 flex justify-between items-center shadow-md fixed bg-white'>
       <div className='font-bold'>Blog App</div>
       <div className='flex gap-3'>
         <Button variant='secondary'>

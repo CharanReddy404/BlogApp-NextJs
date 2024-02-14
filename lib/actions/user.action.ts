@@ -1,24 +1,30 @@
 'use server';
+import { User } from '@prisma/client';
 import prisma from '../../db/prisma';
-const bcrypt = require('bcryptjs');
 
-export async function createUser(
-  name: string,
-  email: string,
-  password: string
-) {
-  try {
-    console.log('------>', name, email, password);
+export async function createUser(data: Omit<User, 'id'>): Promise<User> {
+  return prisma.user.create({ data });
+}
 
-    const salt = await bcrypt.genSalt(10);
+export async function getUserById(id: number): Promise<User | null> {
+  return prisma.user.findUnique({ where: { id } });
+}
 
-    const hashedPassword = await bcrypt.hash(password, salt);
+export async function getUserByEmail(email: string): Promise<User | null> {
+  return prisma.user.findUnique({ where: { email } });
+}
 
-    const res = await prisma.user.create({
-      data: { name, email, password: hashedPassword },
-    });
-    console.log(res);
-  } catch (error) {
-    console.log(error);
-  }
+export async function getAllUsers(): Promise<User[]> {
+  return prisma.user.findMany();
+}
+
+export async function updateUser(
+  id: number,
+  data: Partial<User>
+): Promise<User | null> {
+  return prisma.user.update({ where: { id }, data });
+}
+
+export async function deleteUser(id: number): Promise<User | null> {
+  return prisma.user.delete({ where: { id } });
 }

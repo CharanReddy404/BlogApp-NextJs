@@ -1,5 +1,5 @@
 const LeftSideBar = () => {
-  return <div className='h-screen w-1/6'>LeftSideBar</div>;
+  return <div className='hidden md:block w-1/6 shadow-md'>LeftSideBar</div>;
 };
 
 export default LeftSideBar;

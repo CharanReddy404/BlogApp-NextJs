@@ -14,6 +14,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { createUser } from '@/lib/actions/user.action';
+import { signup } from '@/lib/actions/auth.action';
 
 const formLoginSchema = z
   .object({
@@ -40,7 +41,7 @@ export default function Signup() {
 
   function onSubmit(values: z.infer<typeof formLoginSchema>) {
     console.log(values);
-    createUser(values.name, values.email, values.password);
+    signup(values.name, values.email, values.password);
   }
   return (
     <Form {...form}>
