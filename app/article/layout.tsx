@@ -7,7 +7,7 @@ export default function HomeLayout({
 }) {
   return (
     <section className='flex h-screen w-full'>
-      <div className='w-[250px]'>
+      <div className='hidden md:w-[250px]'>
         <LeftSideBar />
       </div>
       {children}

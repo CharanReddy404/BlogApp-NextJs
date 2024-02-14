@@ -13,7 +13,9 @@ const Header = async () => {
 
   return (
     <div className='w-full py-2 px-5 flex justify-between items-center shadow-md fixed bg-white'>
-      <div className='font-bold'>Blog App</div>
+      <Link href={'/article'} className='font-bold'>
+        Blog App
+      </Link>
       <div className='flex gap-3'>
         {user ? (
           <AvatarControl user={user} />
