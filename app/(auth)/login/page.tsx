@@ -14,7 +14,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { login } from '@/lib/actions/auth.action';
-import { redirect, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 const formLoginSchema = z.object({
   email: z.string().email(),
@@ -36,7 +36,7 @@ export default function Login() {
     try {
       console.log(values);
       await login(values.email, values.password);
-      router.push('/home');
+      router.push('/article');
     } catch (error) {}
   }
 

@@ -13,8 +13,8 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { createUser } from '@/lib/actions/user.action';
 import { signup } from '@/lib/actions/auth.action';
+import { useRouter } from 'next/navigation';
 
 const formLoginSchema = z
   .object({
@@ -29,6 +29,8 @@ const formLoginSchema = z
   });
 
 export default function Signup() {
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof formLoginSchema>>({
     resolver: zodResolver(formLoginSchema),
     defaultValues: {
@@ -39,9 +41,10 @@ export default function Signup() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formLoginSchema>) {
+  async function onSubmit(values: z.infer<typeof formLoginSchema>) {
     console.log(values);
-    signup(values.name, values.email, values.password);
+    await signup(values.name, values.email, values.password);
+    router.push('/article');
   }
   return (
     <Form {...form}>

@@ -15,7 +15,10 @@ import {
 import { Input } from '../ui/input';
 import { Editor } from '@tinymce/tinymce-react';
 import { useRef } from 'react';
-import { createArticle } from '@/lib/actions/article.action';
+import { createArticle, updateArticle } from '@/lib/actions/article.action';
+import { ActionType } from '@/lib/utils';
+import { useRouter } from 'next/navigation';
+import error from 'next/error';
 
 const formArticleSchema = z.object({
   title: z.string().min(10),
@@ -24,22 +27,58 @@ const formArticleSchema = z.object({
   metadata: z.string(),
 });
 
-const Article = () => {
+interface ArticleProps {
+  id: number;
+  title: string;
+  category: string;
+  body: string;
+  metadata: string;
+}
+
+const Article = ({
+  data,
+  type,
+}: {
+  data?: ArticleProps | null;
+  type: ActionType;
+}) => {
   const editorRef = useRef(null);
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof formArticleSchema>>({
     resolver: zodResolver(formArticleSchema),
     defaultValues: {
-      title: '',
-      category: '',
-      body: '',
-      metadata: '',
+      title: data ? data.title : '',
+      category: data ? data.category : '',
+      body: data ? data.body : '',
+      metadata: data ? data.metadata : '',
     },
   });
 
-  function onSubmit(values: z.infer<typeof formArticleSchema>) {
+  async function onSubmit(values: z.infer<typeof formArticleSchema>) {
     console.log(values);
-    createArticle(values);
+    try {
+      let id;
+      switch (type) {
+        case ActionType.Create:
+          const article = await createArticle(values);
+          id = article.id;
+          break;
+        case ActionType.Edit:
+          await updateArticle(data.id, values);
+          id = data.id;
+          break;
+        case ActionType.Delete:
+          console.log('Performing delete action');
+          break;
+        default:
+          console.log('Unknown action');
+      }
+
+      router.push(`/article/${id}`);
+    } catch (error) {
+      console.log(error);
+    }
   }
   return (
     <Form {...form}>
@@ -88,7 +127,7 @@ const Article = () => {
                   }}
                   onBlur={field.onBlur}
                   onEditorChange={(content) => field.onChange(content)}
-                  initialValue=''
+                  initialValue={data ? data.body : ''}
                   init={{
                     height: 350,
                     menubar: false,

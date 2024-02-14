@@ -12,9 +12,23 @@ export async function signup(name: string, email: string, password: string) {
 
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    const res = await createUser({ name, email, password: hashedPassword });
+    const newUser = await createUser({ name, email, password: hashedPassword });
 
-    console.log(res);
+    console.log(newUser);
+    if (newUser) {
+      const user = {
+        id: newUser.id,
+        email: newUser.email,
+        name: newUser.name,
+      };
+
+      const expires = new Date(Date.now() + 1 * 24 * 60 * 60 * 1000);
+      const session = await encrypt({ user, expires });
+
+      cookies().set('session', session, { expires, httpOnly: true });
+    } else {
+      throw new Error('user already exist');
+    }
   } catch (error) {
     console.log(error);
   }
@@ -51,6 +65,5 @@ export async function login(email: string, password: string) {
 }
 
 export async function logout() {
-  // Destroy the session
   cookies().set('session', '', { expires: new Date(0) });
 }

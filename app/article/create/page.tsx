@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Article from '@/components/forms/Article';
+import { ActionType } from '@/lib/utils';
 
 const CreateArticle = () => {
   return (
@@ -13,7 +14,7 @@ const CreateArticle = () => {
         / create
       </div>
       <div className='p-3'>
-        <Article />
+        <Article type={ActionType.Create} />
       </div>
     </div>
   );
