@@ -42,7 +42,6 @@ export default function Signup() {
   });
 
   async function onSubmit(values: z.infer<typeof formLoginSchema>) {
-    console.log(values);
     await signup(values.name, values.email, values.password);
     router.push('/article');
   }

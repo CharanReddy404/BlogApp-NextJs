@@ -12,9 +12,7 @@ export async function generateMetadata({ params }) {
 }
 
 const ArticlePage = async ({ params }) => {
-  console.log(params);
   const article = await getArticleById(+params.id);
-  console.log(article);
   if (!article) {
     return <div>Article not found</div>;
   }

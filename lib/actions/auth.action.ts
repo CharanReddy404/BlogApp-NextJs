@@ -6,15 +6,10 @@ const bcrypt = require('bcryptjs');
 
 export async function signup(name: string, email: string, password: string) {
   try {
-    console.log('------>', name, email, password);
-
     const salt = await bcrypt.genSalt(10);
-
     const hashedPassword = await bcrypt.hash(password, salt);
-
     const newUser = await createUser({ name, email, password: hashedPassword });
 
-    console.log(newUser);
     if (newUser) {
       const user = {
         id: newUser.id,
@@ -38,10 +33,8 @@ export async function login(email: string, password: string) {
   try {
     const existingUser = await getUserByEmail(email);
     if (existingUser) {
-      console.log('user-->', existingUser);
       const login = await bcrypt.compare(password, existingUser.password);
 
-      console.log('login', login);
       if (login) {
         const user = {
           id: existingUser.id,

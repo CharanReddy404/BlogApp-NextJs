@@ -15,10 +15,14 @@ import {
 import { Input } from '../ui/input';
 import { Editor } from '@tinymce/tinymce-react';
 import { useRef } from 'react';
-import { createArticle, updateArticle } from '@/lib/actions/article.action';
+import {
+  createArticle,
+  deleteArticle,
+  updateArticle,
+} from '@/lib/actions/article.action';
 import { ActionType } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
-import error from 'next/error';
+import Link from 'next/link';
 
 const formArticleSchema = z.object({
   title: z.string().min(10),
@@ -56,7 +60,6 @@ const Article = ({
   });
 
   async function onSubmit(values: z.infer<typeof formArticleSchema>) {
-    console.log(values);
     try {
       let id;
       switch (type) {
@@ -68,9 +71,6 @@ const Article = ({
           await updateArticle(data.id, values);
           id = data.id;
           break;
-        case ActionType.Delete:
-          console.log('Performing delete action');
-          break;
         default:
           console.log('Unknown action');
       }
@@ -80,6 +80,16 @@ const Article = ({
       console.log(error);
     }
   }
+
+  async function onDeleteArticle(id) {
+    try {
+      await deleteArticle(id);
+      router.push('/article');
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8 w-full'>
@@ -177,7 +187,17 @@ const Article = ({
           )}
         />
         <div className='flex gap-5'>
-          <Button className='bg-red-600'>Cancel</Button>
+          <Link href={`/article/${data.id}`}>
+            <Button className='bg-red-600'>Cancel</Button>
+          </Link>
+          {type === ActionType.Edit && (
+            <Button
+              className='bg-red-600'
+              onClick={() => onDeleteArticle(data?.id)}
+            >
+              Delete
+            </Button>
+          )}
           <Button type='submit' className='bg-green-600'>
             Save
           </Button>

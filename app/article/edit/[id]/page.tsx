@@ -4,9 +4,7 @@ import { getArticleById } from '@/lib/actions/article.action';
 import { ActionType } from '@/lib/utils';
 
 const EditArticle = async ({ params }) => {
-  console.log(params);
   const article = await getArticleById(+params.id);
-  console.log(article);
   if (!article) {
     return <div>Article not found</div>;
   }

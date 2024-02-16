@@ -1,4 +1,5 @@
 'use server';
+import { revalidatePath } from 'next/cache';
 import prisma from '../../db/prisma';
 import { getSession } from '../session';
 
@@ -7,25 +8,26 @@ export async function createArticle(data) {
   if (!session) {
     return;
   }
-  console.log(session?.user);
   const newArticle = await prisma.article.create({
     data: { ...data, createdById: session.user.id },
   });
-  console.log(newArticle);
+  return newArticle;
 }
 
 export async function getArticleById(id: number) {
-  return prisma.article.findUnique({ where: { id } });
+  return await prisma.article.findUnique({ where: { id } });
 }
 
 export async function getAllArticles() {
-  return prisma.article.findMany();
+  return await prisma.article.findMany();
 }
 
 export async function updateArticle(id: number, data) {
-  return prisma.article.update({ where: { id }, data });
+  const updatedArticle = await prisma.article.update({ where: { id }, data });
+  revalidatePath(`/article/${id}`);
+  return updatedArticle;
 }
 
 export async function deleteArticle(id: number) {
-  return prisma.article.delete({ where: { id } });
+  return await prisma.article.delete({ where: { id } });
 }

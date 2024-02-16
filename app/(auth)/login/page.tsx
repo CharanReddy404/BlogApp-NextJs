@@ -34,7 +34,6 @@ export default function Login() {
 
   async function onSubmit(values: z.infer<typeof formLoginSchema>) {
     try {
-      console.log(values);
       await login(values.email, values.password);
       router.push('/article');
     } catch (error) {}
