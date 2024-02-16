@@ -31,3 +31,32 @@ export async function updateArticle(id: number, data) {
 export async function deleteArticle(id: number) {
   return await prisma.article.delete({ where: { id } });
 }
+
+export async function getUniqueCategories() {
+  try {
+    const uniqueCategories = await prisma.article.findMany({
+      distinct: ['category'],
+      select: {
+        category: true,
+      },
+    });
+    return uniqueCategories.map((article) => article.category);
+  } catch (error) {
+    console.error('Error fetching unique categories:', error);
+    throw error;
+  }
+}
+
+export async function getArticlesByCategory(category: string) {
+  try {
+    const articles = await prisma.article.findMany({
+      where: {
+        category: category,
+      },
+    });
+    return articles;
+  } catch (error) {
+    console.error('Error fetching articles by category:', error);
+    throw error;
+  }
+}
