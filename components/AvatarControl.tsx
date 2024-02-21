@@ -6,12 +6,12 @@ import {
   MenubarContent,
   MenubarItem,
   MenubarMenu,
-  MenubarSeparator,
   MenubarTrigger,
 } from './ui/menubar';
 import { logout } from '@/lib/actions/auth.action';
+import { User } from '@prisma/client';
 
-const AvatarControl = ({ user }) => {
+const AvatarControl = ({ user }: { user: User }) => {
   const router = useRouter();
   const logoutUser = async () => {
     await logout();

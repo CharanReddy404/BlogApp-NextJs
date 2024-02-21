@@ -2,8 +2,9 @@
 import { revalidatePath } from 'next/cache';
 import prisma from '../../db/prisma';
 import { getSession } from '../session';
+import { Article } from '@prisma/client';
 
-export async function createArticle(data) {
+export async function createArticle(data: Article) {
   const session = await getSession();
   if (!session) {
     return;
@@ -22,7 +23,7 @@ export async function getAllArticles() {
   return await prisma.article.findMany();
 }
 
-export async function updateArticle(id: number, data) {
+export async function updateArticle(id: number, data: Article) {
   const updatedArticle = await prisma.article.update({ where: { id }, data });
   revalidatePath(`/article/${id}`);
   return updatedArticle;

@@ -10,22 +10,27 @@ const LeftSideBar = async () => {
   const Categories = await getUniqueCategories();
 
   return (
-    <div className='hidden md:block md:w-[250px] md:shadow-md h-screen'>
-      <div className='text-center flex flex-col gap-4 pt-4'>
+    <div className='p-6 hidden md:block md:w-[250px] md:shadow-md h-screen'>
+      <div className='flex flex-col gap-4 pt-4'>
         {menu.map((v) => (
           <Link key={v.id} href={v.href} className=''>
             {v.name}
           </Link>
         ))}
-        <h1 className='font-bold pt-6'>Categories</h1>
+        <hr className='px-3' />
+        <h1 className='font-bold'>Categories</h1>
+        <hr />
         {Categories.map((categorie) => (
-          <Link
-            key={categorie}
-            href={`/article/categorie/${categorie}`}
-            className=''
-          >
-            {categorie}
-          </Link>
+          <>
+            <Link
+              key={categorie}
+              href={`/article/categorie/${categorie}`}
+              className='font-medium'
+            >
+              {categorie}
+            </Link>
+            <hr />
+          </>
         ))}
       </div>
     </div>

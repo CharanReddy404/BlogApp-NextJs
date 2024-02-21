@@ -59,17 +59,21 @@ const Article = ({
     },
   });
 
-  async function onSubmit(values: z.infer<typeof formArticleSchema>) {
+  async function onSubmit(values: any) {
     try {
       let id;
       switch (type) {
         case ActionType.Create:
           const article = await createArticle(values);
-          id = article.id;
+          if (article) {
+            id = article.id;
+          }
           break;
         case ActionType.Edit:
-          await updateArticle(data.id, values);
-          id = data.id;
+          if (data) {
+            await updateArticle(data.id, values);
+            id = data.id;
+          }
           break;
         default:
           console.log('Unknown action');
@@ -81,7 +85,7 @@ const Article = ({
     }
   }
 
-  async function onDeleteArticle(id) {
+  async function onDeleteArticle(id: number) {
     try {
       await deleteArticle(id);
       router.push('/article');
@@ -187,13 +191,13 @@ const Article = ({
           )}
         />
         <div className='flex gap-5'>
-          <Link href={`/article/${data.id}`}>
+          <Link href={`/article/${data?.id}`}>
             <Button className='bg-red-600'>Cancel</Button>
           </Link>
           {type === ActionType.Edit && (
             <Button
               className='bg-red-600'
-              onClick={() => onDeleteArticle(data?.id)}
+              onClick={() => onDeleteArticle(data?.id!)}
             >
               Delete
             </Button>
