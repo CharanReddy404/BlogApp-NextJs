@@ -8,7 +8,7 @@ import { getArticlesByCategory } from '@/lib/actions/article.action';
 import Link from 'next/link';
 import React from 'react';
 
-const CategoriePage = async ({ params }) => {
+const CategoriePage = async ({ params }: any) => {
   const articles = await getArticlesByCategory(params.categorie);
 
   return (

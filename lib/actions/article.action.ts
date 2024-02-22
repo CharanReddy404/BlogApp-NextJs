@@ -19,6 +19,16 @@ export async function getArticleById(id: number) {
   return await prisma.article.findUnique({ where: { id } });
 }
 
+export async function getAllArticleIds() {
+  const articleIds = await prisma.article.findMany({
+    select: {
+      id: true,
+    },
+  });
+
+  return articleIds;
+}
+
 export async function getAllArticles() {
   return await prisma.article.findMany();
 }

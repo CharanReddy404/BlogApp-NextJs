@@ -1,9 +1,14 @@
 import Link from 'next/link';
 import Article from '@/components/forms/Article';
-import { getArticleById } from '@/lib/actions/article.action';
+import { getAllArticleIds, getArticleById } from '@/lib/actions/article.action';
 import { ActionType } from '@/lib/utils';
 
-const EditArticle = async ({ params }) => {
+export async function generateStaticParams() {
+  const ids = await getAllArticleIds();
+  return ids.map((v) => ({ id: v.id.toString() }));
+}
+
+const EditArticle = async ({ params }: any) => {
   const article = await getArticleById(+params.id);
   if (!article) {
     return <div>Article not found</div>;
