@@ -42,7 +42,7 @@ const LeftSideBar = async () => {
                   <div key={title.id} >
                     <Link
                       href={`/article/${title.id}`}
-                      className="text-blue-500 hover:underline overflow-hidden"
+                      className="hover:underline overflow-hidden"
                     >
                       {title.title}
                     </Link>
