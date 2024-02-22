@@ -1,11 +1,9 @@
 import { getAllArticles } from '@/lib/actions/article.action';
+import { getSession } from '@/lib/session';
 import Link from 'next/link';
 
 const LeftSideBar = async () => {
-  const menu = [
-    { id: 1, name: 'All Articles', href: '/article' },
-    { id: 2, name: 'Create Articles', href: '/article/create' },
-  ];
+  const session = await getSession();
 
   const response: any = await getAllArticles();
 
@@ -27,12 +25,8 @@ const LeftSideBar = async () => {
   return (
     <div className='p-6 hidden md:block md:w-[250px] md:shadow-md h-screen'>
       <div className='flex flex-col gap-4 pt-4'>
-        {menu.map((v) => (
-          <Link key={v.id} href={v.href} className='p-1'>
-            <b>{v.name}</b>
-
-          </Link>
-        ))}
+      <Link href={'/article'}>All Articles</Link>
+        {session && <Link href={'/article/create'}>Create Articles</Link>}
         <hr className='px-3' />
         <h1 className='font-bold text-3xl'>Categories</h1>
 
