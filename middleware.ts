@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSession, updateSession } from './lib/session';
 
-const protectedRoutes = ['/article'];
+const protectedRoutes = ['/article/create', '/article/edit'];
 const ignoreRoutes = ['/login', '/signup'];
 
 export async function middleware(request: NextRequest) {
